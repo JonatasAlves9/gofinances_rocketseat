@@ -10,16 +10,29 @@ import {
   LastTransaction,
 } from "./styles";
 
-export const Highlight = () => {
+interface Props {
+  title: string;
+  ammount: string;
+  lastTransaction: string;
+  type: "up" | "down" | "total";
+}
+
+const icon = {
+  up: "arrow-up-circle",
+  down: "arrow-down-circle",
+  total: "dollar-sign",
+};
+
+export const Highlight = ({ title, ammount, lastTransaction, type }: Props) => {
   return (
-    <Container>
+    <Container type={type}>
       <Header>
-        <Title>Entrada</Title>
-        <Icon name="arrow-up-circle" />
+        <Title type={type}>{title}</Title>
+        <Icon name={icon[type]} type={type} />
       </Header>
       <Footer>
-        <Amount>R$ 10,00</Amount>
-        <LastTransaction>Útima entrada dia 13 de abril</LastTransaction>
+        <Amount type={type}>{ammount}</Amount>
+        <LastTransaction type={type}>{lastTransaction}</LastTransaction>
       </Footer>
     </Container>
   );
