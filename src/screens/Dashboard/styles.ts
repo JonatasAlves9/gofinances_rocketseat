@@ -7,7 +7,6 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) =>theme.colors.background};
-
 `;
 
 export const Header = styled.View`
@@ -67,4 +66,21 @@ export const HighlightCards = styled.ScrollView.attrs({
     width: 100%;
     position: absolute;
     margin-top: ${RFPercentage(22)}px;
+`;
+
+
+export const Transections = styled.View`
+    flex: 1;
+    padding: 0 24px;
+    margin-top: ${RFPercentage(12)}px;
+`;
+
+export const Title = styled.Text`
+    font-size: ${RFValue(18)}px;
+    font-family: ${({theme}) =>theme.fonts.regular};
+    margin-bottom: 16px;
+`;
+
+export const TransactionsList = styled.FlatList`
+
 `;
