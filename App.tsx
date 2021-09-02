@@ -1,5 +1,6 @@
 import React from "react";
 import { Register } from "./src/screens/Register";
+import { CategorySelect } from "./src/screens/CategorySelect";
 import { ThemeProvider } from "styled-components/native";
 import theme from "./src/global/styles/theme";
 import AppLoading from "expo-app-loading";
@@ -24,7 +25,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Register />
+      <CategorySelect />
     </ThemeProvider>
   );
 }
