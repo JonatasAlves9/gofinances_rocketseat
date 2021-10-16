@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useFocusEffect } from '@react-navigation/native';
 
 import { Highlight } from '../../components/Highlight';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
@@ -67,6 +69,10 @@ export function Dashboard(){
   useEffect(() => {
     loadTransactions();
   },[]);
+
+  useFocusEffect(useCallback(() => {
+    loadTransactions();
+  },[]));
   
 
   return (
@@ -75,11 +81,13 @@ export function Dashboard(){
         <UserWrapper>
           <UserInfo>
             <Photo
-              source={{ uri: 'https://avatars.githubusercontent.com/u/49030804?v=4'}}
+              source={{
+                uri: "https://avatars.githubusercontent.com/u/49556955?v=4",
+              }}
             />
             <User>
               <UserGreeting>Olá,</UserGreeting>
-              <UserName>Rodrigo</UserName>
+              <UserName>Jônatas</UserName>
             </User>
           </UserInfo>
 
