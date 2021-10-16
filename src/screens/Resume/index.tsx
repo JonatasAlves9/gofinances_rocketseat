@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components'
 
 import { HistoryCard } from '../../components/HisotyCard';
 
-import { Container, Header, Title, Content, ChartContainer } from './styles'
+import { Container, Header, Title, Content, ChartContainer, MonthSelect, MonthSelectButton, MonthSelectIcon, Month } from './styles'
 import { categories } from '../../utils/categories';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -94,6 +94,15 @@ export function Resume() {
                     paddingBottom: useBottomTabBarHeight(),
                 }}
             >
+                <MonthSelect>
+                    <MonthSelectButton>
+                        <MonthSelectIcon name="chevron-left" />
+                    </MonthSelectButton>
+                    <Month>Maio</Month>
+                    <MonthSelectButton>
+                        <MonthSelectIcon name="chevron-right" />
+                    </MonthSelectButton>
+                </MonthSelect>
                 <ChartContainer>
                     <VictoryPie
                         data={totalByCategories}
