@@ -8,6 +8,7 @@ import { HistoryCard } from '../../components/HisotyCard';
 import { Container, Header, Title, Content, ChartContainer } from './styles'
 import { categories } from '../../utils/categories';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 interface TransactionData {
     type: 'positive' | 'negative';
@@ -85,7 +86,14 @@ export function Resume() {
             <Header>
                 <Title>Resumo por categoria</Title>
             </Header>
-            <Content>
+            <Content
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+
+                    paddingHorizontal: 24,
+                    paddingBottom: useBottomTabBarHeight(),
+                }}
+            >
                 <ChartContainer>
                     <VictoryPie
                         data={totalByCategories}
