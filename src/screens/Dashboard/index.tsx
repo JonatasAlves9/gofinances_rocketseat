@@ -1,117 +1,124 @@
-import React from "react";
-import { Highlight } from "../../components/Highlight";
-import {
-  TransactionCard,
-  TransactionCardProps,
-} from "../../components/TransactionCard";
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { Highlight } from '../../components/Highlight';
+import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
 
 import {
   Container,
   Header,
+  UserWrapper,
   UserInfo,
   Photo,
   User,
-  UserGretting,
+  UserGreeting,
   UserName,
-  UserContainer,
   Icon,
   HighlightCards,
-  Transections,
+  Transactions,
   Title,
-  TransactionsList,
-  LogoutButton,
-} from "./styles";
+  TransactionList,
+  LogoutButton
+} from './styles'
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
 }
 
-export const Dashboard = () => {
-  const data: DataListProps[] = [
-    {
-      id: "1",
-      type: "positive",
-      title: "Desenvolvimento de site",
-      amount: "R$ 12.000.00",
-      category: {
-        name: "Vendas",
-        icon: "dollar-sign",
-      },
-      date: "13/04/2001",
-    },
-    {
-      id: "2",
-      type: "negative",
-      title: "Hamburgueria Pizzy",
-      amount: "R$ 59,00",
-      category: {
-        name: "Alimentação",
-        icon: "coffee",
-      },
-      date: "13/04/2001",
-    },
-    {
-      id: "3",
-      type: "negative",
-      title: "Aluguel do apartamento",
-      amount: "R$ 1.200.00",
-      category: {
-        name: "Casa",
-        icon: "shopping-bag",
-      },
-      date: "13/04/2001",
-    },
-  ];
+export function Dashboard(){
+  const [data, setData] = useState<DataListProps[]>([]);
+
+  async function loadTransactions(){
+    const dataKey = '@gofinances:transactions';
+    const response = await AsyncStorage.getItem(dataKey);
+    const transactions = response ? JSON.parse(response) : [];
+
+    const transactionsFormatted: DataListProps[] = transactions
+    .map((item: DataListProps) => {
+
+      const amount = Number(item.amount)
+      .toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+
+      const date = Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit'
+      }).format(new Date(item.date));
+
+      return {
+        id: item.id,
+        name: item.name,
+        amount,
+        type: item.type,
+        category: item.category,
+        date,
+      }
+
+    });
+    
+    setData(transactionsFormatted);
+    console.log(transactionsFormatted);
+
+  }
+
+  useEffect(() => {
+    loadTransactions();
+  },[]);
+  
+
   return (
     <Container>
       <Header>
-        <UserContainer>
+        <UserWrapper>
           <UserInfo>
             <Photo
-              source={{
-                uri: "https://avatars.githubusercontent.com/u/49556955?v=4",
-              }}
+              source={{ uri: 'https://avatars.githubusercontent.com/u/49030804?v=4'}}
             />
             <User>
-              <UserGretting>Olá,</UserGretting>
-              <UserName>Jônatas</UserName>
+              <UserGreeting>Olá,</UserGreeting>
+              <UserName>Rodrigo</UserName>
             </User>
           </UserInfo>
+
           <LogoutButton onPress={() => {}}>
-            <Icon name="power" />
+            <Icon name="power"/>
           </LogoutButton>
-        </UserContainer>
+        </UserWrapper>
       </Header>
+
       <HighlightCards>
         <Highlight
-          title={"Entradas"}
-          ammount={"R$ 17.400,00"}
-          lastTransaction="Última entrada dia 13 de abril"
           type="up"
+          title="Entradas"
+          amount="R$ 17.400,00"
+          lastTransaction="Última entrada dia 13 de abril"
         />
         <Highlight
-          title={"Saídas"}
-          ammount={"R$ 1.259,00"}
-          lastTransaction="Última entrada dia 3 de abril"
           type="down"
+          title="Saídas"
+          amount="R$ 1.259,00"
+          lastTransaction="Última saída dia 13 de abril"
         />
         <Highlight
-          title={"Total"}
-          ammount={"R$ 16.141,00"}
-          lastTransaction="01 á 16 de abril"
           type="total"
+          title="Total"
+          amount="R$ 16.141,00"
+          lastTransaction="01 à 16 de abril"
         />
       </HighlightCards>
-
-      <Transections>
+    
+      <Transactions>
         <Title>Listagem</Title>
 
-        <TransactionsList
+        <TransactionList
           data={data}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => <TransactionCard data={item} />}
         />
-      </Transections>
+      </Transactions>
     </Container>
-  );
-};
+  )
+}
