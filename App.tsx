@@ -17,6 +17,7 @@ import {
   Poppins_500Medium,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
+import { StatusBar } from "react-native";
 
 export default function App() {
   const [fonstLoaded] = useFonts({
@@ -32,6 +33,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
+        <StatusBar barStyle={'light-content'} />
         <AppRoutes />
       </NavigationContainer>
     </ThemeProvider>

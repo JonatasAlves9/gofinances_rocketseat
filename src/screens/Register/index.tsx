@@ -31,23 +31,24 @@ import {
 
 interface FormData {
   name: string;
-  amount: string;  
+  amount: string;
 }
 
 const schema = Yup.object().shape({
   name: Yup
-  .string()
-  .required('Nome é obrigatório'),
+    .string()
+    .required('Nome é obrigatório'),
   amount: Yup
-  .number()
-  .typeError('Informe um valor númerico')
-  .positive('O valor não pode ser negativo')
+    .number()
+    .typeError('Informe um valor númerico')
+    .positive('O valor não pode ser negativo')
+    .required('O valor é obrigatório'),
 });
 
-export function Register(){
+export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  
+
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria'
@@ -64,23 +65,23 @@ export function Register(){
     resolver: yupResolver(schema)
   });
 
-  function handleTransactionsTypeSelect(type: 'positive' | 'negative'){
+  function handleTransactionsTypeSelect(type: 'positive' | 'negative') {
     setTransactionType(type);
   }
 
-  function handleOpenSelectCategoryModal(){
+  function handleOpenSelectCategoryModal() {
     setCategoryModalOpen(true);
   }
 
-  function handleCloseSelectCategoryModal(){
+  function handleCloseSelectCategoryModal() {
     setCategoryModalOpen(false);
   }
 
-  async function handleRegister(form: FormData){
-    if(!transactionType)
+  async function handleRegister(form: FormData) {
+    if (!transactionType)
       return Alert.alert('Selecione o tipo da transação');
 
-    if(category.key === 'category')
+    if (category.key === 'category')
       return Alert.alert('Selecione a categoria');
 
 
@@ -114,7 +115,7 @@ export function Register(){
       });
 
       navigation.navigate('Listagem');
-      
+
     } catch (error) {
       console.log(error);
       Alert.alert("Não foi possível salvar");
@@ -177,12 +178,12 @@ export function Register(){
 
         <Modal visible={categoryModalOpen}>
           <CategorySelect
-              category={category}
-              setCategory={setCategory}
-              closeSelectCategory={handleCloseSelectCategoryModal}
+            category={category}
+            setCategory={setCategory}
+            closeSelectCategory={handleCloseSelectCategoryModal}
           />
         </Modal>
       </Container>
-    </TouchableWithoutFeedback>      
+    </TouchableWithoutFeedback>
   );
 }
