@@ -20,7 +20,7 @@ import {
 import { StatusBar } from "react-native";
 import { SignIn } from "./src/screens/SignIn";
 
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 
 export default function App() {
   const [fonstLoaded] = useFonts({
@@ -29,7 +29,9 @@ export default function App() {
     Poppins_700Bold,
   });
 
-  if (!fonstLoaded) {
+  const { userStorageLoading } = useAuth();
+
+  if (!fonstLoaded || userStorageLoading) {
     return <AppLoading />;
   }
 

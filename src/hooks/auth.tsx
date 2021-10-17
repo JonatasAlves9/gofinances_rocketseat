@@ -28,6 +28,8 @@ interface AuthContextData {
     user: User;
     signInWithGoogle(): Promise<void>;
     signInWithApple(): Promise<void>;
+    signOut(): Promise<void>;
+    userStorageLoading: boolean;
 }
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -60,7 +62,7 @@ function AuthProvider({ children }: AuthProviderProps) {
                     photo: userInfo.picture
                 }
                 setUser(userLogged);
-                await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
+                await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
             }
 
         } catch (error) {
@@ -78,24 +80,31 @@ function AuthProvider({ children }: AuthProviderProps) {
             });
 
             if (credential) {
+                const name = credential.fullName!.givenName!;
+                const photo = `https://ui-avatars.com/api?name=${name}&length=1`;
                 const userLogged = {
                     id: String(credential.user),
                     email: credential.email!,
                     name: credential.fullName!.givenName!,
-                    photo: undefined
+                    photo
                 };
                 setUser(userLogged);
-                await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
+                await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
             }
         } catch (error) {
             throw new Error(error as string);
         }
     }
 
+    async function signOut() {
+        setUser({} as User);
+        await AsyncStorage.removeItem(userStorageKey);
+    }
+
     useEffect(() => {
         async function loadLoggedUser() {
 
-            const response = await AsyncStorage.getItem('@gofinances:user');
+            const response = await AsyncStorage.getItem(userStorageKey);
 
             const loggedUser = response ? JSON.parse(response) : ({} as User);
 
@@ -109,7 +118,9 @@ function AuthProvider({ children }: AuthProviderProps) {
         <AuthContext.Provider value={{
             user,
             signInWithGoogle,
-            signInWithApple
+            signInWithApple,
+            signOut,
+            userStorageLoading
         }}>
             {children}
         </AuthContext.Provider>
