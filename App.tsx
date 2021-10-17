@@ -9,7 +9,7 @@ import { ThemeProvider } from "styled-components/native";
 import theme from "./src/global/styles/theme";
 import AppLoading from "expo-app-loading";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { Routes } from "./src/routes";
 
 import {
   useFonts,
@@ -35,14 +35,13 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <StatusBar barStyle={'light-content'} />
 
-        <AuthProvider>
-          <SignIn />
-        </AuthProvider>
+      <StatusBar barStyle={'light-content'} />
 
-      </NavigationContainer>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
+
     </ThemeProvider>
   );
 }
