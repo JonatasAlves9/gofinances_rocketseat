@@ -6,7 +6,10 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.jonatasalves9.gofinances"
+    }
   },
   "name": "gofinances"
 }
